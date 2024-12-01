@@ -1,0 +1,34 @@
+services:
+  neo4j:
+    container_name: ddev-${DDEV_SITENAME}-neo4j
+    image: neo4j:latest
+    labels:
+      com.ddev.site-name: ${DDEV_SITENAME}
+      com.ddev.approot: $DDEV_APPROOT
+    volumes:
+      - ".:/mnt/ddev_config"
+      - type: "volume"
+        source: neo4j
+        target: "/data"
+        volume:
+          nocopy: true
+      - type: "volume"
+        source: neo4j-config
+        target: "/config"
+        volume:
+          nocopy: true
+      - type: "volume"
+        source: neo4j-plugins
+        target: "/plugins"
+        volume:
+          nocopy: true
+    environment:
+      - NEO4J_AUTH=neo4j/password
+    expose:
+      - "7474" #http
+      - "7687" #bolt
+    restart: "no"
+volumes:
+  neo4j:
+  neo4j-config:
+  neo4j-plugins:
